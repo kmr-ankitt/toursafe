@@ -2,7 +2,11 @@
 
 ## Git commands
 
-~Work under `dev` branch only~
+make sure u are pushing in dev branch
+
+```bash
+git checkout dev
+```
 
 ```bash
 git add . 
