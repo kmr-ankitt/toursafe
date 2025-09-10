@@ -11,9 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
+    "@prisma/client": "^6.16.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.16.0"
   }
 }
