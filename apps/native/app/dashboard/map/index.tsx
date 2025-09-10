@@ -1,5 +1,5 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import MapView, { Circle, Heatmap, Marker } from 'react-native-maps'
+import { Alert, Dimensions, StyleSheet, Text, View } from 'react-native'
+import MapView, { Heatmap, Marker } from 'react-native-maps'
 import { mapStyle } from '../../../styles/mapStyle'
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
@@ -35,18 +35,34 @@ export default function MapScreen() {
   }
   console.log(location)
 
+  // Check if user is inside a danger zone
+  useEffect(() => {
+    if (location) {
+      const points = coords(location);
+
+      // weight 4 and above considered dangerous
+      const dangerThreshold = 4;
+      const dangerZone = points.find(p => {
+        const distLat = Math.abs(p.latitude - location.coords.latitude);
+        const distLng = Math.abs(p.longitude - location.coords.longitude);
+        return distLat < 0.0005 && distLng < 0.0005 && p.weight >= dangerThreshold;
+      });
+
+      if (dangerZone) {
+        Alert.alert("⚠️ Danger Zone", "You are currently in a danger zone. Stay safe!");
+      }
+    }
+  }, [location]);
+
   return (
     <View style={styles.container}>
       <MapView
-        style={{
-          ...StyleSheet.absoluteFillObject,
-          height: Dimensions.get("window").height,
-        }}
+        style={styles.map}
         initialRegion={{
           latitude: location ? location.coords.latitude : 20.2234975,
-          longitude: location ? location.coords.longitude :  85.7373971,
-          latitudeDelta: 0.0000001,
-          longitudeDelta: 0.0000001,
+          longitude: location ? location.coords.longitude : 85.7373971,
+          latitudeDelta: 0.0001,
+          longitudeDelta: 0.0001,
         }}
         zoomControlEnabled
         showsUserLocation
@@ -65,7 +81,7 @@ export default function MapScreen() {
               longitude: location.coords.longitude,
             }}
           >
-            <FontAwesome6 name="person" size={32} color={colors["red-400"]} />
+            <FontAwesome6 name="person" size={32} color={colors["blue-800"]} />
           </Marker>
         )}
 

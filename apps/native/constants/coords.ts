@@ -25,7 +25,7 @@ export default function coords(location: LocationObject) {
   points.push({
     latitude: baseLat,
     longitude: baseLng,
-    weight: 1 // always 1 for current location
+    weight: 1 // safe zone at current location
   });
 
   return points;
