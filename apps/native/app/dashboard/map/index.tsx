@@ -5,6 +5,7 @@ import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import { FontAwesome6 } from '@expo/vector-icons';
 import colors from '../../../styles/colors';
+import coords from '../../../constants/coords';
 
 export default function MapScreen() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
@@ -37,17 +38,21 @@ export default function MapScreen() {
   return (
     <View style={styles.container}>
       <MapView
-        style={styles.map}
+        style={{
+          ...StyleSheet.absoluteFillObject,
+          height: Dimensions.get("window").height,
+        }}
         initialRegion={{
-          latitude: location ? location.coords.latitude : 37.78825,
-          longitude: location ? location.coords.longitude : -122.4324,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
+          latitude: location ? location.coords.latitude : 20.2234975,
+          longitude: location ? location.coords.longitude :  85.7373971,
+          latitudeDelta: 0.0000001,
+          longitudeDelta: 0.0000001,
         }}
         zoomControlEnabled
         showsUserLocation
         showsCompass={true}
         zoomEnabled
+        mapPadding={{ top: 50, right: 5, bottom: 5, left: 5 }}
         showsMyLocationButton={true}
       >
         {/* Area vulnerability Heatmap */}
@@ -67,20 +72,8 @@ export default function MapScreen() {
         {/**todo: real lat, long**/}
         {location && (
           <Heatmap
-            points={[
-              { latitude: location.coords.latitude + 0.001, longitude: location.coords.longitude + 0.001, weight: 1 },
-              { latitude: location.coords.latitude + 0.001, longitude: location.coords.longitude - 0.001, weight: 2 },
-              { latitude: location.coords.latitude - 0.001, longitude: location.coords.longitude + 0.001, weight: 1 },
-              { latitude: location.coords.latitude - 0.001, longitude: location.coords.longitude - 0.001, weight: 1 },
-              { latitude: location.coords.latitude, longitude: location.coords.longitude, weight: 1 },
-              { latitude: location.coords.latitude + 0.002, longitude: location.coords.longitude, weight: 4 },
-              { latitude: location.coords.latitude, longitude: location.coords.longitude + 0.002, weight: 6 },
-              { latitude: location.coords.latitude - 0.002, longitude: location.coords.longitude, weight: 2 },
-              { latitude: location.coords.latitude, longitude: location.coords.longitude - 0.002, weight: 4 },
-              { latitude: location.coords.latitude + 0.0015, longitude: location.coords.longitude - 0.0015, weight: 1 },
-              { latitude: location.coords.latitude - 0.0015, longitude: location.coords.longitude + 0.0015, weight: 1 }
-            ]}
-            radius={50} 
+            points={coords(location)}
+            radius={50}
             opacity={0.7}
             gradient={{
               colors: ['#00FF00', '#FFFF00', '#FFA500', '#FF0000', '#8B0000'],
