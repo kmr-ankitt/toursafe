@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
-      const { name, phn_no, email, dob, gender, public_key } = req.body;
+      const { name, phn_no, email, dob, gender, public_key, private_key } = req.body;
       const newTourist = await prisma.tourist.create({
         data: {
           name,
@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           dob: dob ? new Date(dob) : undefined,
           gender,
           public_key,
+          private_key: private_key || "",
         },
       });
       res.status(201).json(newTourist);
