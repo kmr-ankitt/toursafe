@@ -24,7 +24,7 @@ model tourist {
   gender      String?   @db.VarChar(10)
   created_at  DateTime? @default(now())
   trip_status String?   @db.VarChar(50)
-  aadhar_no   Int      @unique
+  aadhar_no   String    @unique
 
   // relations
   e_contact   e_contact[]
