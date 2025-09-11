@@ -14,16 +14,17 @@ datasource db {
 
 model tourist {
   tourist_id  Int       @id @default(autoincrement())
-  private_key String
+  private_key String?
   public_key  String
+  code        Int   
   name        String    @db.VarChar(100)
   phn_no      String    @unique @db.VarChar(15)
   email       String    @unique @db.VarChar(150)
   dob         DateTime? @db.Date
   gender      String?   @db.VarChar(10)
   created_at  DateTime? @default(now())
-  kyc         Boolean?  @default(false)
   trip_status String?   @db.VarChar(50)
+  aadhar_no   Int      @unique
 
   // relations
   e_contact   e_contact[]
