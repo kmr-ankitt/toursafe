@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import prisma from './prismaClient/client';
-import userRouter from './routes/userRoutes';
+import touristRouter from './routes/touristRoutes';
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ async function testDBConnection() {
 testDBConnection();
 
 /** Routes **/
-app.use('/api/users', userRouter);
+app.use('/api/tourists', touristRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
