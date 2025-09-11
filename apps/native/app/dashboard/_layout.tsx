@@ -11,8 +11,6 @@ export default function DashboardLayout() {
         },
         headerShown: false,
       }}
-    >
-      <Stack.Screen name="map/index" options={{ title: 'Map'}} />
-    </Stack>
+    />
   )
 }

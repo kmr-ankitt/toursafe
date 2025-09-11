@@ -5,9 +5,9 @@ import RText from "../../components/RText";
 
 export default function Dashboard() {
   return (
-    <View>
-      <Text>Dashboard Screen</Text>
-      <Link href={'/dashboard/map/index'} asChild>
+    <View style={styles.container}>
+      <Text style={styles.hero}>Dashboard Screen</Text>
+      <Link href={'/dashboard/map/'} push asChild>
         <TouchableOpacity style={styles.button}>
           <RText style={styles.buttonText}>Goto Map</RText>
         </TouchableOpacity>

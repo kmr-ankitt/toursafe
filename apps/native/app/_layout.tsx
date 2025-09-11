@@ -4,8 +4,6 @@ import colors from "../styles/colors";
 
 export default function RootScreenLayout() {
   return (
-    <>
-      <StatusBar style="auto" />
       <Stack
         screenOptions={{
           contentStyle: { backgroundColor: colors["zinc-950"] },
@@ -13,6 +11,5 @@ export default function RootScreenLayout() {
           animation: "slide_from_right",
         }}
       />
-    </>
   )
 }
