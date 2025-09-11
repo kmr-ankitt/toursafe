@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 
 export default function Register() {
   const [activeTab, setActiveTab] = useState<"tourist" | "police">("tourist");
+  const router = useRouter();
 
   return (
     <div className=" min-h-screen text-white flex flex-col">
@@ -36,19 +38,38 @@ export default function Register() {
         {/* Form Container */}
         <div className=" p-8 rounded shadow-md w-full max-w-md">
           {activeTab === "tourist" ? (
-            <form className="flex flex-col space-y-4">
-
+            <form
+              className="flex flex-col space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                // Add your login logic here
+                router.push("/tourist-Dashboard");
+              }}
+            >
               <label className="flex flex-col">
                 Phone No
-                <input type="tel" name="phone" required className="p-2 rounded text-black border border-white opacity-25" />
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  className="p-2 rounded text-white border border-white opacity-50"
+                />
               </label>
 
               <label className="flex flex-col">
                 Password
-                <input type="text" name="name" required className="p-2 rounded text-black border border-white opacity-25" />
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  className="p-2 rounded text-white border border-white opacity-50"
+                />
               </label>
 
-              <button type="submit" className="bg-white text-black px-6 py-2 rounded mt-4">
+              <button
+                type="submit"
+                className="bg-white text-black px-6 py-2 rounded mt-4"
+              >
                 Login as Tourist
               </button>
             </form>
@@ -56,15 +77,28 @@ export default function Register() {
             <form className="flex flex-col space-y-4">
               <label className="flex flex-col">
                 Police ID
-                <input type="text" name="policeId" required className="p-2 rounded text-black border border-white opacity-25" />
+                <input
+                  type="text"
+                  name="policeId"
+                  required
+                  className="p-2 rounded text-black border border-white opacity-25"
+                />
               </label>
 
               <label className="flex flex-col">
                 Password
-                <input type="text" name="region" required className="p-2 rounded text-black border border-white opacity-25" />
+                <input
+                  type="text"
+                  name="region"
+                  required
+                  className="p-2 rounded text-black border border-white opacity-25"
+                />
               </label>
 
-              <button type="submit" className="bg-white text-black px-6 py-2 rounded mt-4">
+              <button
+                type="submit"
+                className="bg-white text-black px-6 py-2 rounded mt-4"
+              >
                 Login as Police
               </button>
             </form>
