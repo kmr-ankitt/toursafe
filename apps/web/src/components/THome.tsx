@@ -5,10 +5,10 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge'; // imported Badge component
 import { Rocket } from "lucide-react";
 import { Card } from "./ui/card";
-import { User, MessageSquare, Star } from "lucide-react";
+import { User, MessageSquare, Star, UserPlus } from "lucide-react";
 import Link from "next/link";
 
-// Define the type for the fetched data
+
 interface TripRow {
   touristName: string;
   tripStatus: string;
@@ -26,6 +26,12 @@ export default function THome() {
       .then(data => setRows(data));
   }, []);
 
+  function handleTrackTrip(row: TripRow) {
+    
+    alert(`Tracking trip for ${row.touristName}`);
+    
+  }
+
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
@@ -38,7 +44,9 @@ export default function THome() {
           Welcome to the Tourist Department Dashboard. Here you can manage tourist information securely and efficiently.
         </span>
         <Link href="/add-tourist" passHref>
-          <Button className="bg-white text-black px-6 py-2 rounded-full shadow-lg font-semibold text-lg tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors duration-200">Add Tourist</Button>
+          <Button className="bg-white text-black px-6 py-2 rounded-full shadow-lg font-semibold text-lg tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors duration-200 flex items-center gap-2">
+            <UserPlus className="w-5 h-5" /> Add Tourist
+          </Button>
         </Link>
 
         <div className="flex justify-center items-center mt-4 min-h-[500px]">
@@ -54,6 +62,11 @@ export default function THome() {
                 <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider border-b border-gray-700">Location</th>
                 <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider border-b border-gray-700">Start Date</th>
                 <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider border-b border-gray-700">End Date</th>
+                <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider border-b border-gray-700">
+                  <Button className="bg-emerald-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-emerald-800 transition-colors cursor-default" disabled>
+                    Trip Tracker
+                  </Button>
+                </th>
               </tr>
             </thead>
 
@@ -65,6 +78,12 @@ export default function THome() {
                   <td className="px-6 py-4 border-b border-gray-700">{row.location}</td>
                   <td className="px-6 py-4 border-b border-gray-700">{row.startDate}</td>
                   <td className="px-6 py-4 border-b border-gray-700">{row.endDate}</td>
+                  <td className="px-6 py-4 border-b border-gray-700">
+                    <Button className="bg-emerald-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-emerald-600 transition-colors"
+                      onClick={() => handleTrackTrip(row)}>
+                      Trip Tracker
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>
