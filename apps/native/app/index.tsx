@@ -9,9 +9,14 @@ export default function App() {
     <View style={styles.container}>
       <RText style={styles.hero}>Tourbuddy 👋</RText>
       <RText style={styles.text}>ur buddy our buddy tour buddy</RText>
-      <Link href={'/dashboard/map'} asChild>
+      <Link href={'/register'} asChild>
         <TouchableOpacity style={styles.button}>
-          <RText style={styles.buttonText}>Goto Map</RText>
+          <RText style={styles.buttonText}>Register</RText>
+        </TouchableOpacity>
+      </Link>
+      <Link href={'/login'} asChild>
+        <TouchableOpacity style={styles.button}>
+          <RText style={styles.buttonText}>Login</RText>
         </TouchableOpacity>
       </Link>
       <StatusBar style="auto" />
@@ -35,7 +40,7 @@ const styles = StyleSheet.create({
     color: colors['zinc-500'],
     fontSize: 15,
   },
-  buttonText :{
+  buttonText: {
     color: colors['zinc-100'],
   },
   button: {
@@ -43,5 +48,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
+    width: '60%',
+    alignItems: 'center',
   }
 });
