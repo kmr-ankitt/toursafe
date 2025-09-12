@@ -74,14 +74,21 @@ export default function Register() {
               </button>
             </form>
           ) : (
-            <form className="flex flex-col space-y-4">
+            <form
+              className="flex flex-col space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                // Add your police login logic here
+                router.push("/police-dashboard");
+              }}
+            >
               <label className="flex flex-col">
                 Police ID
                 <input
                   type="text"
                   name="policeId"
                   required
-                  className="p-2 rounded text-black border border-white opacity-25"
+                  className="p-2 rounded text-white  border border-white opacity-60"
                 />
               </label>
 
@@ -91,7 +98,7 @@ export default function Register() {
                   type="text"
                   name="region"
                   required
-                  className="p-2 rounded text-black border border-white opacity-25"
+                  className="p-2 rounded text-white border border-white opacity-60"
                 />
               </label>
 
