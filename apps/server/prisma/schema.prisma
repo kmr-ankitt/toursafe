@@ -8,26 +8,27 @@ datasource db {
 }
 
 model tourist {
-  tourist_id         Int                  @id @default(autoincrement())
-  private_key        String?
-  public_key         String
-  name               String               @db.VarChar(100)
-  phn_no             String               @unique @db.VarChar(15)
-  email              String               @unique @db.VarChar(150)
-  dob                DateTime?            @db.Date
-  gender             String?              @db.VarChar(10)
-  created_at         DateTime?            @default(now())
-  trip_status        String?              @db.VarChar(50)
-  aadhar_no          String               @unique
-  code               Int
-  password           String               @db.VarChar(255)
+  tourist_id  Int       @id @default(autoincrement())
+  private_key String?
+  public_key  String
+  name        String    @db.VarChar(100)
+  phn_no      String    @unique @db.VarChar(15)
+  email       String    @unique @db.VarChar(150)
+  dob         DateTime? @db.Date
+  gender      String?   @db.VarChar(10)
+  created_at  DateTime? @default(now())
+  trip_status String?   @db.VarChar(50)
+  aadhar_no   String    @unique
+  code        Int
+  password    String    @db.VarChar(255)
+
   alert              alert[]
   e_contact          e_contact[]
   e_fir              e_fir[]
   feedback           feedback[]
   location           location[]
   police             police[]
-  tourist_id_mapping tourist_id_mapping[]
+  tourist_id_mapping tourist_department[]
   trip               trip[]
 }
 
@@ -120,14 +121,15 @@ model e_fir {
   tourist     tourist?  @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
 }
 
-model tourist_id_mapping {
-  dept_id    Int
-  tourist_id Int
-  name       String? @db.VarChar(100)
-  region     String? @db.VarChar(100)
-  phn_no     String? @db.VarChar(15)
-  password   String? @db.VarChar(255)
-  tourist    tourist @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
+model tourist_department {
+  dept_id Int @id @default(autoincrement())
 
-  @@id([dept_id, tourist_id])
+  name              String?  @db.VarChar(100)
+  region            String?  @db.VarChar(100)
+  phn_no            String?  @db.VarChar(15)
+  password          String?  @db.VarChar(255)
+  tourist           tourist? @relation(fields: [touristTourist_id], references: [tourist_id])
+  touristTourist_id Int?
+
+  @@unique([name, region]) 
 }
