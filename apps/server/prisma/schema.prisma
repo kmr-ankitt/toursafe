@@ -1,60 +1,48 @@
 generator client {
   provider = "prisma-client-js"
-  }
+}
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-    // removed unsupported 'schema' property; will use default 'public' schema
-  
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
-
-
-// TOURIST TABLE
 
 model tourist {
-  tourist_id  Int       @id @default(autoincrement())
-  private_key String?
-  public_key  String
-  code        Int   
-  name        String    @db.VarChar(100)
-  phn_no      String    @unique @db.VarChar(15)
-  email       String    @unique @db.VarChar(150)
-  dob         DateTime? @db.Date
-  gender      String?   @db.VarChar(10)
-  created_at  DateTime? @default(now())
-  trip_status String?   @db.VarChar(50)
-  aadhar_no   String    @unique
-
-  // relations
-  e_contact   e_contact[]
-  location    location[]
-  trip        trip[]
-  feedback    feedback[]
-  police      police[]
-  alert       alert[]
-  e_fir       e_fir[]
+  tourist_id         Int                  @id @default(autoincrement())
+  private_key        String?
+  public_key         String
+  name               String               @db.VarChar(100)
+  phn_no             String               @unique @db.VarChar(15)
+  email              String               @unique @db.VarChar(150)
+  dob                DateTime?            @db.Date
+  gender             String?              @db.VarChar(10)
+  created_at         DateTime?            @default(now())
+  trip_status        String?              @db.VarChar(50)
+  aadhar_no          String               @unique
+  code               Int
+  password           String               @db.VarChar(255)
+  alert              alert[]
+  e_contact          e_contact[]
+  e_fir              e_fir[]
+  feedback           feedback[]
+  location           location[]
+  police             police[]
   tourist_id_mapping tourist_id_mapping[]
+  trip               trip[]
 }
 
-// EMERGENCY CONTACT TABLE
 model e_contact {
-  contact_id Int     @id @default(autoincrement())
-  tourist_id Int?
-  name       String  @db.VarChar(100)
-  email      String? @db.VarChar(150)
-  phn_no     String? @db.VarChar(15)
-  gender     String? @db.VarChar(10)
+  contact_id  Int      @id @default(autoincrement())
+  tourist_id  Int?
+  name        String   @db.VarChar(100)
+  email       String?  @db.VarChar(150)
+  phn_no      String?  @db.VarChar(15)
+  gender      String?  @db.VarChar(10)
   location_id Int?
-  relation   String? @db.VarChar(50)
-
-  // relations
-  tourist tourist? @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
-    alert   alert[] @relation("AlertContact")
+  relation    String?  @db.VarChar(50)
+  alert       alert[]  @relation("AlertContact")
+  tourist     tourist? @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
 }
-
-
-// LOCATION TABLE
 
 model location {
   location_id Int       @id @default(autoincrement())
@@ -62,16 +50,11 @@ model location {
   timestamps  DateTime? @default(now())
   latitude    Decimal?  @db.Decimal(9, 6)
   longitude   Decimal?  @db.Decimal(9, 6)
-
-  // relations
-  tourist tourist? @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
-  trip    trip[]
-  alert   alert[]
-  e_fir   e_fir[]
+  alert       alert[]
+  e_fir       e_fir[]
+  tourist     tourist?  @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
+  trip        trip[]
 }
-
-
-// TRIP TABLE
 
 model trip {
   trip_id     Int       @id @default(autoincrement())
@@ -82,14 +65,10 @@ model trip {
   qr_code     String?
   status      String?   @db.VarChar(50)
   location_id Int?
-
-  // relations
-  tourist  tourist? @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
-  location location? @relation(fields: [location_id], references: [location_id], onDelete: SetNull)
+  location    location? @relation(fields: [location_id], references: [location_id])
+  tourist     tourist?  @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
 }
 
-
-// FEEDBACK TABLE
 model feedback {
   feedback_id Int       @id @default(autoincrement())
   tourist_id  Int?
@@ -97,48 +76,37 @@ model feedback {
   comments    String?
   suggestion  String?
   created_at  DateTime? @default(now())
-
-  tourist tourist? @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
+  tourist     tourist?  @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
 }
-
-
-// POLICE TABLE
 
 model police {
-  police_id Int     @id @default(autoincrement())
-  name      String? @db.VarChar(100)
-  area      String? @db.VarChar(100)
+  police_id  Int      @id @default(autoincrement())
+  name       String?  @db.VarChar(100)
+  area       String?  @db.VarChar(100)
   tourist_id Int?
-  phn_no    String? @db.VarChar(15)
-  region    String? @db.VarChar(100)
-
-  tourist tourist? @relation(fields: [tourist_id], references: [tourist_id], onDelete: SetNull)
-  alert   alert[] @relation("AlertPolice")
-  e_fir   e_fir[]
+  phn_no     String?  @db.VarChar(15)
+  region     String?  @db.VarChar(100)
+  password   String?  @db.VarChar(255)
+  alert      alert[]  @relation("AlertPolice")
+  e_fir      e_fir[]
+  tourist    tourist? @relation(fields: [tourist_id], references: [tourist_id])
 }
 
-
-// ALERT TABLE
-
 model alert {
-  alert_id          Int       @id @default(autoincrement())
+  alert_id          Int        @id @default(autoincrement())
   tourist_id        Int?
   location_id       Int?
-  alert_type        String?   @db.VarChar(50)
-  status            String?   @db.VarChar(50)
-  created_at        DateTime? @default(now())
+  alert_type        String?    @db.VarChar(50)
+  status            String?    @db.VarChar(50)
+  created_at        DateTime?  @default(now())
   notified_police   Int?
   notified_econtact Int?
   dept_id           Int?
-
-  tourist tourist? @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
-  location location? @relation(fields: [location_id], references: [location_id], onDelete: SetNull)
-  police   police? @relation("AlertPolice", fields: [notified_police], references: [police_id], onDelete: SetNull)
-  e_contact e_contact? @relation("AlertContact", fields: [notified_econtact], references: [contact_id], onDelete: SetNull)
+  location          location?  @relation(fields: [location_id], references: [location_id])
+  e_contact         e_contact? @relation("AlertContact", fields: [notified_econtact], references: [contact_id])
+  police            police?    @relation("AlertPolice", fields: [notified_police], references: [police_id])
+  tourist           tourist?   @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
 }
-
-
-// E-FIR TABLE
 
 model e_fir {
   fir_id      Int       @id @default(autoincrement())
@@ -147,14 +115,10 @@ model e_fir {
   police_dept Int?
   description String?
   location_id Int?
-
-  tourist  tourist? @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
-  police   police?  @relation(fields: [police_dept], references: [police_id], onDelete: SetNull)
-  location location? @relation(fields: [location_id], references: [location_id], onDelete: SetNull)
+  location    location? @relation(fields: [location_id], references: [location_id])
+  police      police?   @relation(fields: [police_dept], references: [police_id])
+  tourist     tourist?  @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
 }
-
-
-// TOURIST_ID (Mapping Table)
 
 model tourist_id_mapping {
   dept_id    Int
@@ -162,8 +126,8 @@ model tourist_id_mapping {
   name       String? @db.VarChar(100)
   region     String? @db.VarChar(100)
   phn_no     String? @db.VarChar(15)
-
-  tourist tourist @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
+  password   String? @db.VarChar(255)
+  tourist    tourist @relation(fields: [tourist_id], references: [tourist_id], onDelete: Cascade)
 
   @@id([dept_id, tourist_id])
 }
