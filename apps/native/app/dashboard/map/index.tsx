@@ -6,11 +6,18 @@ import { useEffect, useState } from 'react';
 import { FontAwesome6 } from '@expo/vector-icons';
 import colors from '../../../styles/colors';
 import coords from '../../../constants/coords';
+import { io } from 'socket.io-client';
+
+const URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+const socket = io(URL);
 
 export default function MapScreen() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [messages, setMessages] = useState<string[]>([]);
+  const [input, setInput] = useState("");
 
+  // get location permissions and fetch current locatin
   useEffect(() => {
     async function getCurrentLocation() {
 
@@ -53,6 +60,26 @@ export default function MapScreen() {
       }
     }
   }, [location]);
+
+  // useEffect(() => {
+  //   // listen for messages from server
+  //   socket.on("messageResponse", (msg) => {
+  //     setMessages((prev) => [...prev, msg]);
+  //   });
+
+  //   // cleanup
+  //   return () => {
+  //     socket.off("messageResponse");
+  //   };
+  // }, []);
+
+  // const sendMessage = () => {
+  //   if (input.trim() !== "") {
+  //     socket.emit("message", input); // send to server
+  //     setInput("");
+  //   }
+  // };
+
 
   return (
     <View style={styles.container}>

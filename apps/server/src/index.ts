@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import prisma from './prismaClient/client';
 import touristRouter from './routes/touristRoutes';
 import cors from 'cors'
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 dotenv.config();
 
@@ -30,6 +32,15 @@ app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+const httpServer = createServer(app);
+
+export const io = new Server(httpServer, {
+  cors: {
+    origin: "*", 
+    methods: ["GET", "POST"]
+  }
+});
+
+httpServer.listen(PORT, () => {
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
