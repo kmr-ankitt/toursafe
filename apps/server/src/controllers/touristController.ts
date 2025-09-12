@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../prismaClient/client";
-import { encrypt, decrypt } from "../auth/encrypt-decrypt";
+import { encrypt, decrypt, generatedPublicKey } from "../auth/encrypt-decrypt";
 
 export async function getTourists(req: Request, res: Response) {
   try {
@@ -16,24 +16,22 @@ export async function createTourist(req: Request, res: Response) {
 
   console.log("Get Password", req.body);
 
+  // create the public key
+
   try {
-    const {
-      public_key,
-      code,
-      name,
-      phn_no,
-      email,
-      dob,
-      gender,
-      aadhar_no,
-      password,
-    } = req.body;
+    const { code, name, phn_no, email, dob, gender, aadhar_no, password } =
+      req.body;
 
-    const hashedPassword = await encrypt(password); // encrypt the password
+    // generate the public key
+    const public_key_generated = await generatedPublicKey(req.body);
 
+    // encrypt the password
+    const hashedPassword = await encrypt(password);
+
+    // create the tourist
     const newTourist = await prisma.tourist.create({
       data: {
-        public_key,
+        public_key: public_key_generated, // use the generated public
         code,
         name,
         phn_no,
@@ -45,7 +43,14 @@ export async function createTourist(req: Request, res: Response) {
       },
     });
 
-    res.status(201).json(newTourist);
+    res
+      .status(201)
+      .json({
+        message: "Tourist created successfully",
+        status: 201,
+        data: newTourist,
+        public_key_generated: public_key_generated,
+      });
   } catch (error) {
     res.status(500).json({ message: "Error creating tourist", error });
   }
