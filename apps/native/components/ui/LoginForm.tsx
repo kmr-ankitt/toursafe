@@ -6,6 +6,8 @@ import Button from "./Button";
 import RText from "../RText";
 import colors from "../../styles/colors";
 import { router } from "expo-router";
+import { storeData } from "../../utils/storage";
+import { generateCode } from "../../utils/code";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -25,6 +27,15 @@ export default function LoginForm() {
 
   const onSubmit = (data: FormData) => {
     console.log("✅ Form Submitted:", data);
+    const pubId = "test";
+    storeData(pubId);
+    const code = generateCode();
+    console.log(code)
+
+    /**
+     * map this code to the pubId in the backend
+     * **/
+
     router.push("/dashboard");
   };
 
