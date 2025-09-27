@@ -28,7 +28,7 @@ export default function AddTouristPage() {
       
       setForm({ name: "", phn_no: "", email: "", dob: "", gender: "", public_key: "" });
       
-      window.location.href = "/tourist-Dashboard";
+      // window.location.href = "/tourist-Dashboard";
     }
   };
 

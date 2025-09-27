@@ -16,13 +16,13 @@ export async function decrypt(
 }
 
 interface TouristData {
-  code: number;
   name: string;
-  phn_no: string;
+  code: number;
+  phn_no: number;
   email: string;
-  dob?: string | Date; // Optional since it can be null
-  gender?: string; // Optional since it can be null
-  aadhar_no: string;
+  dob?: string | Date; 
+  gender?: string; 
+  aadhar_no: number;
   password: string;
 }
 

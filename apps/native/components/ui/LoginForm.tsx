@@ -2,12 +2,9 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-nativ
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "./Button";
 import RText from "../RText";
 import colors from "../../styles/colors";
-import { router } from "expo-router";
-import { storeData } from "../../utils/storage";
-import { generateCode } from "../../utils/code";
+import { loginTourist } from "../../api/tourist";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -25,18 +22,9 @@ export default function LoginForm() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     console.log("✅ Form Submitted:", data);
-    const pubId = "test";
-    storeData(pubId);
-    const code = generateCode();
-    console.log(code)
-
-    /**
-     * map this code to the pubId in the backend
-     * **/
-
-    router.push("/dashboard");
+    await loginTourist(data.email, data.password);
   };
 
   return (

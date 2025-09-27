@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import prisma from "../prismaClient/client";
 import { encrypt, decrypt, generatedPublicKey } from "../auth/encrypt-decrypt";
+import { NEXT_CACHE_TAG_MAX_LENGTH } from "next/dist/lib/constants";
+import { CLIENT_PUBLIC_FILES_PATH } from "next/dist/shared/lib/constants";
 
 export async function getTourists(req: Request, res: Response) {
   try {
@@ -13,10 +15,8 @@ export async function getTourists(req: Request, res: Response) {
 
 export async function createTourist(req: Request, res: Response) {
   try {
-    console.log("Get Password", req.body);
 
     const {
-      code,
       name,
       phn_no,
       email,
@@ -24,23 +24,35 @@ export async function createTourist(req: Request, res: Response) {
       gender,
       aadhar_no,
       password,
+    } : {
+      name: string,
+      phn_no: string,
+      email: string,
+      dob: Date,
+      gender: string,
+      aadhar_no: string,
+      password: string,
     } = req.body;
+    console.log(req.body)
+
 
     // generate the public key
     const public_key_generated = await generatedPublicKey(req.body);
 
     // encrypt the password
     const hashedPassword = await encrypt(password);
+    
+    const code = Math.floor(100000 + Math.random() * 900000);
 
     // create the tourist
     const newTourist = await prisma.tourist.create({
       data: {
         public_key: public_key_generated,
-        code,
         name,
         phn_no,
+        code,
         email,
-        dob,
+        dob : new Date(dob),
         gender,
         aadhar_no,
         password: hashedPassword,
@@ -50,10 +62,10 @@ export async function createTourist(req: Request, res: Response) {
     res.status(201).json({
       message: "Tourist created successfully",
       status: 201,
-      data: newTourist,
-      public_key_generated: public_key_generated,
+      public_id: public_key_generated,
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error creating tourist", error });
   }
 }
@@ -84,12 +96,11 @@ export async function loginTourist(req: Request, res: Response) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      // Remove password from response
-      const { password: _, ...touristData } = tourist;
-
       res.status(200).json({
         message: "Login successful",
-        tourist: touristData,
+        data: { 
+          "public_id": tourist.public_key
+        }
       });
     } catch (error) {
       res.status(500).json({ message: "Error during login", error });
