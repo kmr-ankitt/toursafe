@@ -1,13 +1,13 @@
+import { useEffect } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "./Button";
 import RText from "../RText";
 import colors from "../../styles/colors";
 import { router } from "expo-router";
-import { storeData } from "../../utils/storage";
-import { generateCode } from "../../utils/code";
+import { loginTourist } from "../../api/tourist";
+import { getData } from "../../utils/storage";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -15,6 +15,7 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
+
 
 export default function LoginForm() {
   const {
@@ -25,18 +26,19 @@ export default function LoginForm() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    const checkLogin = async () => {
+      const data = await getData();
+      if (data) {
+        router.replace("/dashboard");
+      }
+    };
+    checkLogin();
+  }, []);
+
+  const onSubmit = async (data: FormData) => {
     console.log("✅ Form Submitted:", data);
-    const pubId = "test";
-    storeData(pubId);
-    const code = generateCode();
-    console.log(code)
-
-    /**
-     * map this code to the pubId in the backend
-     * **/
-
-    router.push("/dashboard");
+    await loginTourist(data);
   };
 
   return (

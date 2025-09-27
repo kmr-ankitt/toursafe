@@ -1,9 +1,15 @@
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../styles/colors";
 import RText from "../../components/RText";
+import { removeData } from "../../utils/storage";
 
 export default function Dashboard() {
+  const handleLogout = () =>{
+    removeData();
+    router.replace("/")
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.hero}>Dashboard Screen</Text>
@@ -12,6 +18,9 @@ export default function Dashboard() {
           <RText style={styles.buttonText}>Goto Map</RText>
         </TouchableOpacity>
       </Link>
+      <TouchableOpacity style={styles.button} onPress={()=> handleLogout()}>
+        <RText style={styles.buttonText}>Logout</RText>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -33,7 +42,7 @@ const styles = StyleSheet.create({
     color: colors['zinc-500'],
     fontSize: 15,
   },
-  buttonText :{
+  buttonText: {
     color: colors['zinc-100'],
   },
   button: {

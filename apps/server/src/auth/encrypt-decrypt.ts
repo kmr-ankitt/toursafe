@@ -16,7 +16,6 @@ export async function decrypt(
 }
 
 interface TouristData {
-  code: number;
   name: string;
   phn_no: string;
   email: string;

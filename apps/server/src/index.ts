@@ -26,7 +26,7 @@ async function testDBConnection() {
 testDBConnection();
 
 /** Routes **/
-app.use('/api/tourists', touristRouter);
+app.use('/api/tourist', touristRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
