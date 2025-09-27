@@ -17,8 +17,8 @@ export default function Intro() {
         </h1>
 
         <p className="text-xl sm:text-2xl mb-12 max-w-xs sm:max-w-sm mx-auto leading-relaxed bg-gradient-to-b from-white via-gray-200 to-gray-400 text-transparent bg-clip-text">
-          <span className="block mb-1">Access and manage,</span>
-          <span className="block">tourist information securely.</span>
+          <span className="block mb-1">Ensure safe and secure,</span>
+          <span className="block">tourism for all.</span>
         </p>
 
         {/* Buttons side by side */}
