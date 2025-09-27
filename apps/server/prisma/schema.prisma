@@ -12,13 +12,13 @@ model tourist {
   private_key String?
   public_key  String
   name        String    @db.VarChar(100)
-  phn_no      String    @unique @db.VarChar(15)
+  phn_no      Int       
   email       String    @unique @db.VarChar(150)
   dob         DateTime? @db.Date
   gender      String?   @db.VarChar(10)
   created_at  DateTime? @default(now())
   trip_status String?   @db.VarChar(50)
-  aadhar_no   String    @unique
+  aadhar_no   Int       @unique 
   code        Int
   password    String    @db.VarChar(255)
 
