@@ -1,9 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Navbar from "./Tnavabar";
-import { Button } from "./ui/button";
-import { Card } from "./ui/card";
-import { User, MessageSquare, Star, X } from "lucide-react";
+
 
 interface TripRow {
   id: string;
@@ -14,45 +10,16 @@ interface TripRow {
 }
 
 export default function THome() {
-  const [rows, setRows] = useState<TripRow[]>([]);
-  const [touristData, setTouristData] = useState<TripRow[]>([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [publicKeyInput, setPublicKeyInput] = useState("");
+
 
   // Fetch tourist.json from public folder
   useEffect(() => {
-    fetch("/tourist.json")
-      .then((res) => res.json())
-      .then((data) => setTouristData(data))
-      .catch((err) => console.error("Error fetching tourist data:", err));
-  }, []);
 
-  const handleAddTourist = () => setModalOpen(true);
-
-  const handleSubmit = () => {
-    const matched = touristData.find((t) => t.publicKey === publicKeyInput);
-    if (matched) {
-      setRows((prev) => [...prev, matched]);
-      setModalOpen(false);
-      setPublicKeyInput("");
-    } else {
-      alert("Public key not found!");
-    }
-  };
 
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
 
-      {/* ===== Header ===== */}
-      <div className="pt-24 flex flex-col items-center text-center px-4">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-wide">
-          Tourist Department Dashboard
-        </h1>
-        <p className="mt-4 text-gray-400 text-lg max-w-xl">
-          Manage and monitor all tourist trip details in one secure place.
-        </p>
-      </div>
 
       {/* ===== Table Section ===== */}
       <div className="mt-20 flex flex-col items-center px-4 w-full">
@@ -71,35 +38,13 @@ export default function THome() {
           <table className="w-full bg-gray-900 text-white rounded-lg shadow-xl border border-gray-700 overflow-hidden">
             <thead className="bg-gray-800">
               <tr>
-                <th className="px-6 py-4 text-left text-xs md:text-sm font-bold uppercase tracking-wider border-b border-gray-700">
-                  Tourist ID
-                </th>
-                <th className="px-6 py-4 text-left text-xs md:text-sm font-bold uppercase tracking-wider border-b border-gray-700">
-                  Name
-                </th>
-                <th className="px-6 py-4 text-left text-xs md:text-sm font-bold uppercase tracking-wider border-b border-gray-700">
-                  Destination
-                </th>
-                <th className="px-6 py-4 text-left text-xs md:text-sm font-bold uppercase tracking-wider border-b border-gray-700">
-                  Duration
+
                 </th>
               </tr>
             </thead>
 
             <tbody className="bg-black">
-              {rows.length > 0 ? (
-                rows.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-gray-800 transition-colors">
-                    <td className="px-6 py-4 border-b border-gray-700">{row.id}</td>
-                    <td className="px-6 py-4 border-b border-gray-700">{row.name}</td>
-                    <td className="px-6 py-4 border-b border-gray-700">{row.destination}</td>
-                    <td className="px-6 py-4 border-b border-gray-700">{row.duration}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={4} className="px-6 py-16 text-center text-gray-500 text-lg">
-                    No tourist added yet
+
                   </td>
                 </tr>
               )}
@@ -189,6 +134,9 @@ export default function THome() {
           ))}
         </div>
       </div>
+      <footer className="w-full bg-gray-900 text-white text-center py-4 mt-12 rounded-t-xl">
+        &copy; {new Date().getFullYear()} TourSafe Tourist Dashboard. All rights reserved.
+      </footer>
     </div>
   );
 }

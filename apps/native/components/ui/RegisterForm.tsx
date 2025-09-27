@@ -6,10 +6,9 @@ import Button from "./Button";
 import RText from "../RText";
 import colors from "../../styles/colors";
 import { router } from "expo-router";
-import { storeData } from "../../utils/storage";
-import { generateCode } from "../../utils/code";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { useState } from "react";
+import { registerTourists } from "../../api/tourist";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -21,7 +20,7 @@ const schema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 
-type FormData = z.infer<typeof schema>;
+export type FormData = z.infer<typeof schema>;
 
 export default function RegisterForm() {
   const [dob, setDob] = useState<Date | null>(null);
@@ -34,43 +33,11 @@ export default function RegisterForm() {
   });
 
   const onSubmit = async (data: FormData) => {
-    const pubId = "ankit";
-    const code = generateCode();
-
     console.log(process.env.EXPO_PUBLIC_BACKEND_URL)
-    try {
-      const res = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL}/api/tourists/register-tourist`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          public_key: pubId, // Replace with actual public key if available
-          code: code,
-          name: data.name,
-          phn_no: data.phn_no,
-          email: data.email,
-          dob: data.dob.toISOString(),
-          gender: data.gender,
-          aadhar_no: data.aadhar_no,
-        }),
-      });
-      storeData(pubId);
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || "Failed to register tourist");
-      }
-
-      const tourist = await res.json();
-      console.log("Tourist created:", tourist);
-    } catch (err) {
-      console.error("Error creating tourist:", err);
-    }
-
-
+    registerTourists(data)
     router.push("/dashboard");
   };
+
 
   return (
     <View style={styles.container}>

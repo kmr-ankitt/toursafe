@@ -27,6 +27,7 @@
     "react-native-maps": "1.20.1",
     "react-native-safe-area-context": "^5.4.0",
     "react-native-screens": "^4.11.1",
+    "socket.io-client": "^4.8.1",
     "zod": "^4.1.6"
   },
   "devDependencies": {
