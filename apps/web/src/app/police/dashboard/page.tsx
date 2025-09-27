@@ -294,6 +294,14 @@ export default function PoliceDashboard() {
                                             <span className="text-xs font-medium">{efir.policeInCharge}</span>
                                         </div>
                                     )}
+                                    {efir.status === 'Active' && (
+                                        <div className="mt-2">
+                                            <button className="w-full px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+                                                <MapPin className='w-3 h-3' />
+                                                Track Location
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </CardContent>
                         </Card>
