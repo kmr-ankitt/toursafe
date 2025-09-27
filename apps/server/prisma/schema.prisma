@@ -8,20 +8,19 @@ datasource db {
 }
 
 model tourist {
-  tourist_id  Int       @id @default(autoincrement())
-  private_key String?
-  public_key  String
-  name        String    @db.VarChar(100)
-  phn_no      Int       
-  email       String    @unique @db.VarChar(150)
-  dob         DateTime? @db.Date
-  gender      String?   @db.VarChar(10)
-  created_at  DateTime? @default(now())
-  trip_status String?   @db.VarChar(50)
-  aadhar_no   Int       @unique 
-  code        Int
-  password    String    @db.VarChar(255)
-
+  tourist_id         Int                  @id @default(autoincrement())
+  private_key        String?
+  public_key         String
+  name               String               @db.VarChar(100)
+  email              String               @unique @db.VarChar(150)
+  dob                DateTime?            @db.Date
+  gender             String?              @db.VarChar(10)
+  created_at         DateTime?            @default(now())
+  trip_status        String?              @db.VarChar(50)
+  code               Int
+  password           String               @db.VarChar(255)
+  phn_no             String
+  aadhar_no          String               @unique
   alert              alert[]
   e_contact          e_contact[]
   e_fir              e_fir[]
@@ -122,14 +121,13 @@ model e_fir {
 }
 
 model tourist_department {
-  dept_id Int @id @default(autoincrement())
-
+  dept_id           Int      @id @default(autoincrement())
   name              String?  @db.VarChar(100)
   region            String?  @db.VarChar(100)
   phn_no            String?  @db.VarChar(15)
   password          String?  @db.VarChar(255)
-  tourist           tourist? @relation(fields: [touristTourist_id], references: [tourist_id])
   touristTourist_id Int?
+  tourist           tourist? @relation(fields: [touristTourist_id], references: [tourist_id])
 
-  @@unique([name, region]) 
+  @@unique([name, region])
 }

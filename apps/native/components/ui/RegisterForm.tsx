@@ -2,22 +2,22 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-nativ
 import { useForm, Controller } from "react-hook-form";
 import { date, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "./Button";
 import RText from "../RText";
 import colors from "../../styles/colors";
 import { router } from "expo-router";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { registerTourists } from "../../api/tourist";
+import { getData } from "../../utils/storage";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
-  email: z.email("Invalid email address"),
+  email: z.email("Invalid email address").trim(),
   phn_no: z.string().min(10, "Phone number must be at least 10 digits"),
   dob: z.date(),
   gender: z.enum(["male", "female", "other"]),
   aadhar_no: z.string().min(12, "Aadhar number must be at least 12 digits").max(12, "Aadhar number must be of 12 digits"),
-  password: z.string().min(6, "Password must be at least 6 characters long"),
+  password: z.string().min(6, "Password must be at least 6 characters long").trim(),
 });
 
 export type FormData = z.infer<typeof schema>;
@@ -32,10 +32,19 @@ export default function RegisterForm() {
     resolver: zodResolver(schema),
   });
 
+  useEffect(() => {
+    const checkLogin = async () => {
+      const data = await getData();
+      if (data) {
+        router.replace("/dashboard");
+      }
+    };
+    checkLogin();
+  }, []);
+
   const onSubmit = async (data: FormData) => {
     console.log(process.env.EXPO_PUBLIC_BACKEND_URL)
-    registerTourists(data)
-    router.push("/dashboard");
+    await registerTourists(data)
   };
 
 
@@ -85,8 +94,8 @@ export default function RegisterForm() {
           <TextInput
             style={styles.input}
             onBlur={onBlur}
-            onChangeText={onChange}
             value={value}
+            onChangeText={onChange}
             placeholder="Enter your phone number"
             placeholderTextColor={colors["zinc-200"]}
             keyboardType="phone-pad"
@@ -152,7 +161,7 @@ export default function RegisterForm() {
                 }}
                 onPress={() => onChange(option)}
               >
-                <Text style={{ color: colors["zinc-200"] }}>{option.charAt(0).toUpperCase() + option.slice(1)}</Text>
+                <Text style={{ color: colors["zinc-200"] }}>{option}</Text>
               </TouchableOpacity>
             ))}
           </View>

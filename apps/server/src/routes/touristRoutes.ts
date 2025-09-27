@@ -4,7 +4,7 @@ import { createTourist, getTourists, loginTourist } from '../controllers/tourist
 const touristRouter = Router();
 
 touristRouter.get('/', getTourists);
-touristRouter.post("/register-tourist", createTourist);
-touristRouter.post("/login-tourist", loginTourist);
+touristRouter.post("/register", createTourist);
+touristRouter.post("/login", loginTourist);
 
 export default touristRouter;

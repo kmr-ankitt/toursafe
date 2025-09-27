@@ -18,3 +18,11 @@ export const getData = async () => {
     console.error("Error retrieving data", e);
   }
 };
+
+export const removeData = async () => {
+  try {
+    await AsyncStorage.removeItem('pubId');
+  } catch (e) {
+    console.error("Error removing data", e);
+  }
+};
