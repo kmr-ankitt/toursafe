@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; // ✅ imported
 import Navbar from "@/components/Navbar";
 
-export default function Register() {
+export default function Login() {
   const [activeTab, setActiveTab] = useState<"tourist" | "police">("tourist");
-  const router = useRouter();
+  const router = useRouter(); // ✅ initialize router here
 
   return (
     <div className=" min-h-screen text-white flex flex-col">
       <Navbar />
 
-      <div className="flex flex-col items-center justify-center flex-grow">
+      <div className="flex flex-col items-center justify-center flex-1 py-10">
         <h1 className="text-4xl font-bold mb-8">Login to Portal.</h1>
 
         {/* Tabs */}
@@ -36,14 +36,14 @@ export default function Register() {
         </div>
 
         {/* Form Container */}
-        <div className=" p-8 rounded shadow-md w-full max-w-md">
+        <div className="p-8 rounded shadow-md w-full max-w-md">
           {activeTab === "tourist" ? (
             <form
               className="flex flex-col space-y-4"
               onSubmit={(e) => {
                 e.preventDefault();
                 // Add your login logic here
-                router.push("/tourist-Dashboard");
+                router.push("/tourist-Dashboard"); // ✅ now works
               }}
             >
               <label className="flex flex-col">
@@ -60,7 +60,7 @@ export default function Register() {
                 Password
                 <input
                   type="text"
-                  name="name"
+                  name="password"
                   required
                   className="p-2 rounded text-white border border-white opacity-50"
                 />
@@ -96,7 +96,7 @@ export default function Register() {
                 Password
                 <input
                   type="text"
-                  name="region"
+                  name="password"
                   required
                   className="p-2 rounded text-white border border-white opacity-60"
                 />
