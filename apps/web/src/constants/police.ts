@@ -63,6 +63,8 @@ export const officers: Officer[] = [
 
 // Already have Officer & officers above…
 
+// src/data.ts
+
 export interface EFIR {
   id: string;
   title: string;
@@ -73,56 +75,118 @@ export interface EFIR {
   policeInCharge?: string;  // only for previous EFIR (solved)
 }
 
-// 6 default EFIRs: 2 Active, 2 Pending, 2 Previous
+// 6 default EFIRs about natural disasters: 2 Active, 2 Pending, 2 Previous
 export const efirs: EFIR[] = [
   {
     id: 'EFIR-001',
-    title: 'Lost Passport Report',
+    title: 'Flash Flood Warning',
     status: 'Active',
-    description: 'Tourist lost passport near Central Market.',
+    description: 'Sudden flash flood reported near Central Market area.',
     filedBy: 'John Carter',
     dateFiled: '2025-09-20',
   },
   {
     id: 'EFIR-002',
-    title: 'Pickpocketing Incident',
+    title: 'Earthquake Tremors Report',
     status: 'Active',
-    description: 'Wallet stolen at railway station.',
+    description: 'Mild earthquake tremors felt at railway station zone.',
     filedBy: 'Alice Smith',
     dateFiled: '2025-09-21',
   },
   {
     id: 'EFIR-003',
-    title: 'Luggage Missing Complaint',
+    title: 'Landslide Alert',
     status: 'Pending',
-    description: 'Lost baggage while traveling to East District.',
+    description: 'Potential landslide detected near East District hillside.',
     filedBy: 'Robert Brown',
     dateFiled: '2025-09-18',
   },
   {
     id: 'EFIR-004',
-    title: 'Harassment at Tourist Spot',
+    title: 'Storm Damage Report',
     status: 'Pending',
-    description: 'Tourist reported harassment at South Park.',
+    description: 'High winds and storm causing damage in South Park area.',
     filedBy: 'Sarah Miller',
     dateFiled: '2025-09-19',
   },
   {
     id: 'EFIR-005',
-    title: 'Hotel Fraud Complaint',
+    title: 'Wildfire Incident',
     status: 'Previous',
-    description: 'Fraudulent hotel booking scam.',
+    description: 'Wildfire controlled in forest area near Downtown.',
     filedBy: 'Linda Green',
     dateFiled: '2025-08-30',
-    policeInCharge: 'Officer John Doe', // solved by this officer
+    policeInCharge: 'Officer John Doe', // officer who coordinated response
   },
   {
     id: 'EFIR-006',
-    title: 'Guided Tour Overcharge',
+    title: 'Flood Relief Completed',
     status: 'Previous',
-    description: 'Tour guide overcharged foreign tourist.',
+    description: 'Flood waters receded and relief operations finished in North District.',
     filedBy: 'Emily Johnson',
     dateFiled: '2025-08-28',
-    policeInCharge: 'Officer Jane Smith', // solved by this officer
+    policeInCharge: 'Officer Jane Smith', // officer who coordinated response
   },
+];
+
+
+// src/touristDepartments.ts
+
+export interface TouristDepartment {
+  name: string;
+  description: string;
+  phone: string;
+  hours: string;
+}
+
+export const touristDepartments: TouristDepartment[] = [
+  {
+    name: 'Central Tourist Office',
+    description: 'Main City Center',
+    phone: '+91 98765 43210',
+    hours: '24/7',
+  },
+  {
+    name: 'North District Office',
+    description: 'North Zone',
+    phone: '+91 98765 43211',
+    hours: '9 AM - 8 PM',
+  },
+  {
+    name: 'Emergency Helpline',
+    description: '24/7 Tourist Support',
+    phone: '1800-XXX-XXXX',
+    hours: 'Immediate Response',
+  },
+];
+
+
+// src/policeOfficers.ts
+
+export const policeOfficers: string[] = [
+  'Officer John Doe',
+  'Officer Jane Smith',
+  'Officer Michael Johnson',
+  'Officer Priya Sharma',
+  'Officer Rajesh Kumar',
+  'Officer Emily Davis',
+  'Officer David Brown',
+  'Officer Anjali Patel',
+  'Officer Robert Wilson',
+  'Officer Sunita Verma'
+];
+
+// src/newsHeadlines.ts
+
+export const newsHeadlines: string[] = [
+  "City Launches Smart Policing App for Tourists",
+  "Flash Flood Warning Issued for Downtown Area",
+  "New Tourist Information Centers Open in North District",
+  "Police Officers Receive Training on Disaster Response",
+  "Emergency Helpline Receives Record Calls During Festival Season",
+  "Wildfire Under Control in Western Hills, Relief Teams Deployed",
+  "High-Tech Surveillance Cameras Installed at Major Tourist Spots",
+  "Local Authorities Announce 24/7 Support for Foreign Visitors",
+  "Evacuation Drill Conducted in Coastal Zone",
+  "Community Volunteers Join Police for Disaster Management"
 ];
