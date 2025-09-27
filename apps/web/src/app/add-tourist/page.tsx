@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Tnavabar";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function AddTouristPage() {
   const [form, setForm] = useState({
@@ -12,7 +13,8 @@ export default function AddTouristPage() {
     gender: "",
     public_key: ""
   });
-
+  const router = useRouter();
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -28,7 +30,7 @@ export default function AddTouristPage() {
       
       setForm({ name: "", phn_no: "", email: "", dob: "", gender: "", public_key: "" });
       
-      window.location.href = "/tourist-Dashboard";
+      router.push("/tourist-Dashboard")
     }
   };
 
@@ -53,7 +55,7 @@ export default function AddTouristPage() {
             });
             if (res.ok) {
               setForm({ name: "", phn_no: "", email: "", dob: "", gender: "", public_key: "" });
-              window.location.href = "/tourist-Dashboard";
+              router.push("/tourist-Dashboard");
             }
           }}
         >Add Tourist</Button>

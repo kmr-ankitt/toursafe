@@ -1,4 +1,4 @@
-[
+export const tourist = [
   {
     "publicKey": "pubkey1",
     "id": "T001",

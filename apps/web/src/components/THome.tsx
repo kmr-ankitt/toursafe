@@ -1,5 +1,13 @@
 "use client";
 
+import React, { useState, useCallback } from "react";
+import { MessageSquare, Star, User, X } from "lucide-react";
+import Navbar from "./Navbar";
+import { Button } from "./ui/button";
+import { Card } from "./ui/card";
+import { tourist } from "@/constants/tourist";
+import { useRouter } from "next/navigation";
+
 
 interface TripRow {
   id: string;
@@ -9,12 +17,24 @@ interface TripRow {
   publicKey: string;
 }
 
+
 export default function THome() {
+  // const [modalOpen, setModalOpen] = useState(false);
+  // const [publicKeyInput, setPublicKeyInput] = useState("");
 
+  const router = useRouter();
+  // Placeholder for handleAddTourist, opens the modal
+  const handleAddTourist = () => {
+    // setModalOpen(true);
+    router.push("/add-tourist");
+  };
 
-  // Fetch tourist.json from public folder
-  useEffect(() => {
-
+  // Placeholder for handleSubmit, closes the modal and clears input
+  // const handleSubmit = useCallback(() => {
+    // You can add your submit logic here
+    // setModalOpen(false);
+    // setPublicKeyInput("");
+  // }, []);
 
   return (
     <div className="min-h-screen bg-black">
@@ -38,22 +58,39 @@ export default function THome() {
           <table className="w-full bg-gray-900 text-white rounded-lg shadow-xl border border-gray-700 overflow-hidden">
             <thead className="bg-gray-800">
               <tr>
-
-                </th>
+                <th className="py-3 px-4 text-left">Name</th>
+                <th className="py-3 px-4 text-left">Destination</th>
+                <th className="py-3 px-4 text-left">Duration</th>
+                <th className="py-3 px-4 text-left">Public Key</th>
+                <th className="py-3 px-4 text-left">Actions</th>
               </tr>
             </thead>
-
             <tbody className="bg-black">
-
-                  </td>
-                </tr>
-              )}
+              {
+                tourist.map((trip: TripRow) => (
+                  <tr key={trip.id} className="border-b border-gray-700 hover:bg-gray-800 transition-colors">
+                    <td className="py-3 px-4">{trip.name}</td>
+                    <td className="py-3 px-4">{trip.destination}</td>
+                    <td className="py-3 px-4">{trip.duration}</td>
+                    <td className="py-3 px-4 break-all">{trip.publicKey}</td>
+                    <td className="py-3 px-4">
+                      <Button
+                        className="bg-red-600 text-white px-4 py-1 rounded-full shadow hover:bg-red-700 transition-colors"
+                        // Placeholder for delete action
+                        onClick={() => alert(`Delete tourist with ID: ${trip.id}`)}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              }
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* ===== Modal ===== */}
+      {/* ===== Modal =====
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
           <div className="bg-gray-900 rounded-lg p-6 w-[400px] relative">
@@ -79,7 +116,7 @@ export default function THome() {
             </Button>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* ===== Feedback Section ===== */}
       <div className="mt-20 w-full flex flex-col items-center">
