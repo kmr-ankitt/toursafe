@@ -1,7 +1,7 @@
 import React from 'react'
-import { Button } from './ui/button';
 import Link from 'next/link';
 import { LogOutIcon } from 'lucide-react';
+import { Button } from '../ui/button';
 
  export default function Pnavbar ()  {
   return (

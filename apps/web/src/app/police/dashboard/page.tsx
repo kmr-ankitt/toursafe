@@ -1,15 +1,15 @@
 "use client";
-import Pnavbar from "@/components/Pnavbar";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Table } from "@/components/ui/table";
+import Pnavbar from "@/components/police/Pnavbar";
 
 
 
 export default function PoliceDashboard() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center">
-      <Pnavbar/>
+      <Pnavbar />
       {/* police logo */}
       <Image src="/police logo.png" alt="Police Logo" width={100} height={100} className="rounded-xl" />
       <h1 className="text-4xl font-bold  text-red-500  mt-10 mb-6">Police Department Dashboard</h1>

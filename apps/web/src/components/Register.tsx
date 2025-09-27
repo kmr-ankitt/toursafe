@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { useRouter } from "next/navigation";
-import { generateCode } from "@/lib/utils";
 
 export default function Register() {
   const [activeTab, setActiveTab] = useState<"tourist" | "police">("tourist");
@@ -38,7 +37,7 @@ export default function Register() {
       const department = await res.json();
       console.log("Department registered:", department);
 
-      router.push("/dashboard");
+      router.push("/department/dashboard");
     } catch (err) {
       console.error("Error:", err);
     }

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Navbar from "@/components/Tnavabar";
+import Navbar from "@/components/department/Tnavabar";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
@@ -30,7 +30,7 @@ export default function AddTouristPage() {
       
       setForm({ name: "", phn_no: "", email: "", dob: "", gender: "", public_key: "" });
       
-      router.push("/tourist-Dashboard")
+      router.push("/department/dashboard")
     }
   };
 
@@ -55,7 +55,7 @@ export default function AddTouristPage() {
             });
             if (res.ok) {
               setForm({ name: "", phn_no: "", email: "", dob: "", gender: "", public_key: "" });
-              router.push("/tourist-Dashboard");
+              router.push("/department/dashboard");
             }
           }}
         >Add Tourist</Button>

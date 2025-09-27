@@ -2,11 +2,11 @@
 
 import React, { useState, useCallback } from "react";
 import { MessageSquare, Star, User, X } from "lucide-react";
-import Navbar from "./Navbar";
-import { Button } from "./ui/button";
-import { Card } from "./ui/card";
 import { tourist } from "@/constants/tourist";
 import { useRouter } from "next/navigation";
+import Navbar from "../Navbar";
+import { Button } from "../ui/button";
+import { Card } from "../ui/card";
 
 
 interface TripRow {
@@ -26,7 +26,7 @@ export default function THome() {
   // Placeholder for handleAddTourist, opens the modal
   const handleAddTourist = () => {
     // setModalOpen(true);
-    router.push("/add-tourist");
+    router.push("/department/add-tourist");
   };
 
   // Placeholder for handleSubmit, closes the modal and clears input

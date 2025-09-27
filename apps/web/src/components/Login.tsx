@@ -43,7 +43,7 @@ export default function Login() {
               onSubmit={(e) => {
                 e.preventDefault();
                 // Add your login logic here
-                router.push("/tourist-Dashboard"); // ✅ now works
+                router.push("/department/dashboard"); // ✅ now works
               }}
             >
               <label className="flex flex-col">
@@ -79,7 +79,7 @@ export default function Login() {
               onSubmit={(e) => {
                 e.preventDefault();
                 // Add your police login logic here
-                router.push("/police-dashboard");
+                router.push("/police/dashboard");
               }}
             >
               <label className="flex flex-col">
