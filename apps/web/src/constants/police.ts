@@ -1,4 +1,3 @@
-// src/data.ts
 export interface Officer {
   initials: string;
   name: string;
@@ -59,8 +58,6 @@ export const officers: Officer[] = [
   },
 ];
 
-// src/data.ts
-
 // Already have Officer & officers above…
 
 export interface EFIR {
@@ -73,56 +70,56 @@ export interface EFIR {
   policeInCharge?: string;  // only for previous EFIR (solved)
 }
 
-// 6 default EFIRs: 2 Active, 2 Pending, 2 Previous
+// 6 default EFIRs about natural disasters: 2 Active, 2 Pending, 2 Previous
 export const efirs: EFIR[] = [
   {
     id: 'EFIR-001',
-    title: 'Lost Passport Report',
+    title: 'Flash Flood Warning',
     status: 'Active',
-    description: 'Tourist lost passport near Central Market.',
+    description: 'Sudden flash flood reported near Central Market area.',
     filedBy: 'John Carter',
     dateFiled: '2025-09-20',
   },
   {
     id: 'EFIR-002',
-    title: 'Pickpocketing Incident',
+    title: 'Earthquake Tremors Report',
     status: 'Active',
-    description: 'Wallet stolen at railway station.',
+    description: 'Mild earthquake tremors felt at railway station zone.',
     filedBy: 'Alice Smith',
     dateFiled: '2025-09-21',
   },
   {
     id: 'EFIR-003',
-    title: 'Luggage Missing Complaint',
+    title: 'Landslide Alert',
     status: 'Pending',
-    description: 'Lost baggage while traveling to East District.',
+    description: 'Potential landslide detected near East District hillside.',
     filedBy: 'Robert Brown',
     dateFiled: '2025-09-18',
   },
   {
     id: 'EFIR-004',
-    title: 'Harassment at Tourist Spot',
+    title: 'Storm Damage Report',
     status: 'Pending',
-    description: 'Tourist reported harassment at South Park.',
+    description: 'High winds and storm causing damage in South Park area.',
     filedBy: 'Sarah Miller',
     dateFiled: '2025-09-19',
   },
   {
     id: 'EFIR-005',
-    title: 'Hotel Fraud Complaint',
+    title: 'Wildfire Incident',
     status: 'Previous',
-    description: 'Fraudulent hotel booking scam.',
+    description: 'Wildfire controlled in forest area near Downtown.',
     filedBy: 'Linda Green',
     dateFiled: '2025-08-30',
-    policeInCharge: 'Officer John Doe', // solved by this officer
+    policeInCharge: 'Officer John Doe', // officer who coordinated response
   },
   {
     id: 'EFIR-006',
-    title: 'Guided Tour Overcharge',
+    title: 'Flood Relief Completed',
     status: 'Previous',
-    description: 'Tour guide overcharged foreign tourist.',
+    description: 'Flood waters receded and relief operations finished in North District.',
     filedBy: 'Emily Johnson',
     dateFiled: '2025-08-28',
-    policeInCharge: 'Officer Jane Smith', // solved by this officer
+    policeInCharge: 'Officer Jane Smith', // officer who coordinated response
   },
 ];
