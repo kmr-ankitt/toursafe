@@ -1,14 +1,24 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { date, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import RText from "../RText";
 import colors from "../../styles/colors";
 import { router } from "expo-router";
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { useEffect, useState } from "react";
 import { registerTourists } from "../../api/tourist";
 import { getData } from "../../utils/storage";
+import {
+  testNetworkConnection,
+  getNetworkInfo,
+} from "../../utils/networkDebug";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -16,8 +26,14 @@ const schema = z.object({
   phn_no: z.string().min(10, "Phone number must be at least 10 digits"),
   dob: z.date(),
   gender: z.enum(["male", "female", "other"]),
-  aadhar_no: z.string().min(12, "Aadhar number must be at least 12 digits").max(12, "Aadhar number must be of 12 digits"),
-  password: z.string().min(6, "Password must be at least 6 characters long").trim(),
+  aadhar_no: z
+    .string()
+    .min(12, "Aadhar number must be at least 12 digits")
+    .max(12, "Aadhar number must be of 12 digits"),
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters long")
+    .trim(),
 });
 
 export type FormData = z.infer<typeof schema>;
@@ -43,10 +59,16 @@ export default function RegisterForm() {
   }, []);
 
   const onSubmit = async (data: FormData) => {
-    console.log(process.env.EXPO_PUBLIC_BACKEND_URL)
-    await registerTourists(data)
+    console.log("🔧 Environment URL:", process.env.EXPO_PUBLIC_BACKEND_URL);
+    console.log("📝 Form data submitted:", { ...data, password: "[REDACTED]" });
+    await registerTourists(data);
   };
 
+  const handleNetworkTest = async () => {
+    console.log("🧪 Manual network test triggered");
+    getNetworkInfo();
+    await testNetworkConnection();
+  };
 
   return (
     <View style={styles.container}>
@@ -102,7 +124,9 @@ export default function RegisterForm() {
           />
         )}
       />
-      {errors.phn_no && <Text style={styles.error}>{errors.phn_no.message}</Text>}
+      {errors.phn_no && (
+        <Text style={styles.error}>{errors.phn_no.message}</Text>
+      )}
 
       {/* Date of Birth */}
       <Controller
@@ -126,10 +150,7 @@ export default function RegisterForm() {
 
           return (
             <View style={{ width: "80%", marginBottom: 10 }}>
-              <TouchableOpacity
-                style={styles.input}
-                onPress={showDatepicker}
-              >
+              <TouchableOpacity style={styles.input} onPress={showDatepicker}>
                 <Text style={{ color: colors["zinc-200"], paddingTop: 10 }}>
                   {value ? value.toDateString() : "Select Date of Birth"}
                 </Text>
@@ -145,12 +166,20 @@ export default function RegisterForm() {
         control={control}
         name="gender"
         render={({ field: { onChange, value } }) => (
-          <View style={{ flexDirection: "row", marginBottom: 10, width: "80%", justifyContent: "space-between" }}>
-            {["male", "female", "other"].map(option => (
+          <View
+            style={{
+              flexDirection: "row",
+              marginBottom: 10,
+              width: "80%",
+              justifyContent: "space-between",
+            }}
+          >
+            {["male", "female", "other"].map((option) => (
               <TouchableOpacity
                 key={option}
                 style={{
-                  backgroundColor: value === option ? colors["zinc-800"] : "transparent",
+                  backgroundColor:
+                    value === option ? colors["zinc-800"] : "transparent",
                   padding: 8,
                   borderRadius: 5,
                   borderWidth: 1,
@@ -167,7 +196,9 @@ export default function RegisterForm() {
           </View>
         )}
       />
-      {errors.gender && <Text style={styles.error}>{errors.gender.message}</Text>}
+      {errors.gender && (
+        <Text style={styles.error}>{errors.gender.message}</Text>
+      )}
 
       {/* Aadhar Number */}
       <Controller
@@ -185,7 +216,9 @@ export default function RegisterForm() {
           />
         )}
       />
-      {errors.aadhar_no && <Text style={styles.error}>{errors.aadhar_no.message}</Text>}
+      {errors.aadhar_no && (
+        <Text style={styles.error}>{errors.aadhar_no.message}</Text>
+      )}
 
       {/* Password */}
       <Controller
@@ -203,11 +236,21 @@ export default function RegisterForm() {
           />
         )}
       />
-      {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+      {errors.password && (
+        <Text style={styles.error}>{errors.password.message}</Text>
+      )}
 
       {/* Button */}
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <RText style={styles.buttonText}>Register</RText>
+      </TouchableOpacity>
+
+      {/* Debug Network Button - Remove this in production */}
+      <TouchableOpacity
+        style={[styles.button, styles.debugButton]}
+        onPress={handleNetworkTest}
+      >
+        <RText style={styles.buttonText}>🔍 Test Network Connection</RText>
       </TouchableOpacity>
     </View>
   );
@@ -244,8 +287,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
+  debugButton: {
+    backgroundColor: colors["zinc-600"],
+    marginTop: 5,
+  },
   buttonText: {
     color: colors["zinc-200"],
     fontWeight: "bold",
   },
-}); 
+});

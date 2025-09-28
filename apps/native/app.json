@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "Tourbuddy",
-    "slug": "tourbuddy",
+    "name": "TourSafe",
+    "slug": "toursafe",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
-    "scheme": "myapp",
+    "scheme": "toursafe",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#18181b"
     },
     "ios": {
       "supportsTablet": true
@@ -19,24 +19,24 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#18181b"
       },
       "edgeToEdgeEnabled": true
     },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
     "experiments": {
       "reactCanary": true
-    }
-  },
-  "web": {
-    "favicon": "./assets/favicon.png"
-  },
-  "plugins": [
-    "expo-router",
-    [
-      "expo-location",
-      {
-        "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
-      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ]
     ]
-  ]
+  }
 }
