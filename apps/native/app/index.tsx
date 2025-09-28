@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, Dimensions } from "react-native";
 import colors from "../styles/colors";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import RText from "../components/RText";
 import Button from "../components/ui/Button";
 
@@ -31,7 +31,7 @@ export default function App() {
             <Button
               value="Get Started"
               width={width * 0.8}
-              onSubmit={() => {}}
+              onSubmit={() => {router.push('/dashboard')}}
               variant="primary"
             />
           </Link>
@@ -42,7 +42,7 @@ export default function App() {
               <Button
                 value="Sign In"
                 width={width * 0.8}
-                onSubmit={() => {}}
+                onSubmit={() => {router.push('/register')}}
                 variant="outline"
               />
             </Link>
