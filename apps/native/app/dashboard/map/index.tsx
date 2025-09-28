@@ -1,18 +1,21 @@
-import { Alert, Dimensions, StyleSheet, Text, View } from 'react-native'
-import MapView, { Heatmap, Marker } from 'react-native-maps'
-import { mapStyle } from '../../../styles/mapStyle'
-import * as Location from 'expo-location';
-import { useEffect, useState } from 'react';
-import { FontAwesome6 } from '@expo/vector-icons';
-import colors from '../../../styles/colors';
-import coords from '../../../constants/coords';
-import { io } from 'socket.io-client';
+import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
+import MapView, { Heatmap, Marker } from "react-native-maps";
+import { mapStyle } from "../../../styles/mapStyle";
+import * as Location from "expo-location";
+import { useEffect, useState } from "react";
+import { FontAwesome6 } from "@expo/vector-icons";
+import colors from "../../../styles/colors";
+import coords from "../../../constants/coords";
+import { io } from "socket.io-client";
+import EmergencyAlert from "../../../components/EmergencyAlert";
 
 const URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 const socket = io(URL);
 
 export default function MapScreen() {
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const [location, setLocation] = useState<Location.LocationObject | null>(
+    null
+  );
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
   const [input, setInput] = useState("");
@@ -20,10 +23,9 @@ export default function MapScreen() {
   // get location permissions and fetch current locatin
   useEffect(() => {
     async function getCurrentLocation() {
-
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
 
@@ -34,13 +36,13 @@ export default function MapScreen() {
     getCurrentLocation();
   }, []);
 
-  let text = 'Waiting...';
+  let text = "Waiting...";
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
     text = JSON.stringify(location);
   }
-  console.log(location)
+  console.log(location);
 
   // Check if user is inside a danger zone
   useEffect(() => {
@@ -49,14 +51,19 @@ export default function MapScreen() {
 
       // weight 4 and above considered dangerous
       const dangerThreshold = 4;
-      const dangerZone = points.find(p => {
+      const dangerZone = points.find((p) => {
         const distLat = Math.abs(p.latitude - location.coords.latitude);
         const distLng = Math.abs(p.longitude - location.coords.longitude);
-        return distLat < 0.0005 && distLng < 0.0005 && p.weight >= dangerThreshold;
+        return (
+          distLat < 0.0005 && distLng < 0.0005 && p.weight >= dangerThreshold
+        );
       });
 
       if (dangerZone) {
-        Alert.alert("⚠️ Danger Zone", "You are currently in a danger zone. Stay safe!");
+        Alert.alert(
+          "⚠️ Danger Zone",
+          "You are currently in a danger zone. Stay safe!"
+        );
       }
     }
   }, [location]);
@@ -79,7 +86,6 @@ export default function MapScreen() {
   //     setInput("");
   //   }
   // };
-
 
   return (
     <View style={styles.container}>
@@ -119,25 +125,28 @@ export default function MapScreen() {
             radius={50}
             opacity={0.7}
             gradient={{
-              colors: ['#00FF00', '#FFFF00', '#FFA500', '#FF0000', '#8B0000'],
+              colors: ["#00FF00", "#FFFF00", "#FFA500", "#FF0000", "#8B0000"],
               startPoints: [0.01, 0.25, 0.5, 0.75, 1],
               colorMapSize: 256,
             }}
           />
         )}
       </MapView>
+
+      {/* Emergency Alert Button */}
+      <EmergencyAlert position="bottom-right" size="large" showLabel={true} />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   map: {
     ...StyleSheet.absoluteFillObject,
     height: Dimensions.get("window").height,
   },
-})
+});

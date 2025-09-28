@@ -14,6 +14,8 @@ import Button from "../../components/ui/Button";
 import { removeData } from "../../utils/storage";
 import { StatusBar } from "expo-status-bar";
 import { useState, useRef, useEffect } from "react";
+import { useEmergency } from "../../contexts/EmergencyContext";
+import EmergencyAlert from "../../components/EmergencyAlert";
 
 const { width, height } = Dimensions.get("window");
 
@@ -21,6 +23,8 @@ export default function Dashboard() {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const sidebarAnimation = useRef(new Animated.Value(-width * 0.85)).current;
   const overlayAnimation = useRef(new Animated.Value(0)).current;
+  const { isEmergencyActive, triggerEmergency, cancelEmergency } =
+    useEmergency();
 
   useEffect(() => {
     Animated.parallel([
@@ -63,27 +67,41 @@ export default function Dashboard() {
   };
 
   const handleEmergency = () => {
-    Alert.alert(
-      "Emergency Alert",
-      "This will send your location to emergency contacts and authorities. Continue?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Send Alert",
-          style: "destructive",
-          onPress: () => {
-            // TODO: Implement emergency alert functionality
-            Alert.alert(
-              "Emergency Alert Sent",
-              "Your location and emergency alert have been sent to your contacts and local authorities."
-            );
+    if (isEmergencyActive) {
+      // Cancel emergency
+      Alert.alert(
+        "Cancel Emergency Alert",
+        "Are you sure you want to cancel the emergency alert?",
+        [
+          { text: "No", style: "cancel" },
+          {
+            text: "Yes, Cancel",
+            style: "destructive",
+            onPress: cancelEmergency,
           },
-        },
-      ]
-    );
+        ]
+      );
+    } else {
+      // Trigger emergency
+      Alert.alert(
+        "🚨 Emergency Alert",
+        "This will immediately send your location to emergency contacts and authorities. Continue?",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Send Alert",
+            style: "destructive",
+            onPress: () => {
+              triggerEmergency();
+              Alert.alert(
+                "Emergency Alert Sent!",
+                "Your location and emergency alert have been sent to your contacts and local authorities. Help is on the way."
+              );
+            },
+          },
+        ]
+      );
+    }
   };
 
   return (
@@ -135,14 +153,23 @@ export default function Dashboard() {
 
           <View style={styles.quickActionsGrid}>
             <TouchableOpacity
-              style={styles.emergencyButton}
+              style={[
+                styles.emergencyButton,
+                isEmergencyActive ? styles.emergencyButtonActive : {},
+              ]}
               onPress={handleEmergency}
             >
               <View style={styles.actionIconContainer}>
-                <RText style={styles.actionIcon}>🚨</RText>
+                <RText style={styles.actionIcon}>
+                  {isEmergencyActive ? "�️" : "�🚨"}
+                </RText>
               </View>
-              <RText style={styles.actionTitle}>Emergency</RText>
-              <RText style={styles.actionSubtitle}>Send instant alert</RText>
+              <RText style={styles.actionTitle}>
+                {isEmergencyActive ? "Emergency Active" : "Emergency"}
+              </RText>
+              <RText style={styles.actionSubtitle}>
+                {isEmergencyActive ? "Tap to cancel" : "Send instant alert"}
+              </RText>
             </TouchableOpacity>
 
             <Link href={"/dashboard/map"} asChild>
@@ -219,6 +246,8 @@ export default function Dashboard() {
             </RText>
 
             <View style={styles.featuresContainer}>
+              <View></View>
+
               <View style={styles.featureCard}>
                 <View style={styles.featureIconContainer}>
                   <RText style={styles.featureIcon}>📍</RText>
@@ -313,6 +342,9 @@ export default function Dashboard() {
           </View>
         </ScrollView>
       </Animated.View>
+
+      {/* Global Emergency Alert - Small floating button */}
+      <EmergencyAlert position="top-right" size="small" showLabel={false} />
     </View>
   );
 }
@@ -456,6 +488,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 8,
+  },
+  emergencyButtonActive: {
+    backgroundColor: colors["red-700"],
+    borderColor: colors["red-400"],
+    shadowColor: colors["red-400"],
+    shadowOpacity: 0.6,
+    shadowRadius: 12,
+    elevation: 12,
   },
   actionCard: {
     flex: 1,
