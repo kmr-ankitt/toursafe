@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { MessageSquare, Star, User, X } from "lucide-react";
+import React, { useState } from "react";
+import { MessageSquare, Star, User, X, Search as SearchIcon } from "lucide-react";
 import { tourist } from "@/constants/tourist";
 import { useRouter } from "next/navigation";
-import Navbar from "../Navbar";
+import Navbar from "@/components/department/Tnavabar";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
-
 
 interface TripRow {
   id: string;
@@ -15,163 +14,246 @@ interface TripRow {
   destination: string;
   duration: string;
   publicKey: string;
+  lastLocation: { lat: number; lng: number };
+  efir?: string;
 }
 
-
 export default function THome() {
-  // const [modalOpen, setModalOpen] = useState(false);
-  // const [publicKeyInput, setPublicKeyInput] = useState("");
-
   const router = useRouter();
-  // Placeholder for handleAddTourist, opens the modal
+  const [selectedEFIR, setSelectedEFIR] = useState<TripRow | null>(null);
+  const [approvalStatus, setApprovalStatus] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
+
   const handleAddTourist = () => {
-    // setModalOpen(true);
     router.push("/department/add-tourist");
   };
 
-  // Placeholder for handleSubmit, closes the modal and clears input
-  // const handleSubmit = useCallback(() => {
-    // You can add your submit logic here
-    // setModalOpen(false);
-    // setPublicKeyInput("");
-  // }, []);
+  const handleApprove = () => setApprovalStatus("✅ EFIR Approved");
+  const handleDisapprove = () => setApprovalStatus("❌ EFIR Disapproved");
+
+  // Filter tourists based on search query
+  const displayedTourists = query
+    ? tourist.filter((t) =>
+        t.name.toLowerCase().includes(query.toLowerCase())
+      )
+    : tourist;
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen flex flex-col bg-white text-black">
+      {/* Navbar */}
       <Navbar />
 
+      {/* Dashboard Header + Add Tourist Button */}
+      <div className="mt-20 flex justify-between items-center px-10">
+        <h1 className="text-5xl font-bold text-orange-700">Tourist Dashboard</h1>
+        <Button
+          className="px-6 py-2 bg-orange-700 text-white font-bold rounded-lg hover:bg-orange-800 transition-colors duration-200 shadow-md hover:shadow-lg"
+          onClick={handleAddTourist}
+        >
+          Add Tourist
+        </Button>
+      </div>
 
-      {/* ===== Table Section ===== */}
-      <div className="mt-20 flex flex-col items-center px-4 w-full">
-        <div className="w-full max-w-5xl flex flex-col items-center relative">
-          {/* Add Tourist button – top-right corner */}
-          <div className="w-full flex justify-end mb-4">
-            <Button
-              className="bg-white text-black px-6 py-2 rounded-full shadow-lg font-semibold text-lg tracking-wide border-2 border-white hover:bg-black hover:text-white transition-colors duration-200"
-              onClick={handleAddTourist}
-            >
-              Add Tourist
-            </Button>
-          </div>
+      {/* Search Bar */}
+      <div className="mt-6 px-10 max-w-2xl">
+        <div className="relative">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search Tourist by Name..."
+            className="w-full pl-10 pr-4 py-2 rounded-lg border border-amber-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+          />
+          <SearchIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+        </div>
+      </div>
 
-          {/* Tourist Table */}
-          <table className="w-full bg-gray-900 text-white rounded-lg shadow-xl border border-gray-700 overflow-hidden">
-            <thead className="bg-gray-800">
+      {/* Table Section */}
+      <div className="mt-6 flex flex-col items-center px-10 w-full flex-1">
+        <div className="w-full max-w-7xl">
+          <table className="w-full text-black rounded-lg shadow-xl border border-amber-700 overflow-hidden">
+            <thead className="bg-amber-700 text-white">
               <tr>
                 <th className="py-3 px-4 text-left">Name</th>
                 <th className="py-3 px-4 text-left">Destination</th>
                 <th className="py-3 px-4 text-left">Duration</th>
                 <th className="py-3 px-4 text-left">Public Key</th>
-                <th className="py-3 px-4 text-left">Actions</th>
+                <th className="py-3 px-4 text-left"></th>
               </tr>
             </thead>
-            <tbody className="bg-black">
-              {
-                tourist.map((trip: TripRow) => (
-                  <tr key={trip.id} className="border-b border-gray-700 hover:bg-gray-800 transition-colors">
+            <tbody className="bg-orange-50">
+              {displayedTourists.length > 0 ? (
+                displayedTourists.map((trip: TripRow) => (
+                  <tr
+                    key={trip.id}
+                    className="border-b border-amber-300 hover:bg-orange-100 transition-colors"
+                  >
                     <td className="py-3 px-4">{trip.name}</td>
                     <td className="py-3 px-4">{trip.destination}</td>
                     <td className="py-3 px-4">{trip.duration}</td>
                     <td className="py-3 px-4 break-all">{trip.publicKey}</td>
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-4 flex justify-end gap-2">
                       <Button
                         className="bg-red-600 text-white px-4 py-1 rounded-full shadow hover:bg-red-700 transition-colors"
-                        // Placeholder for delete action
                         onClick={() => alert(`Delete tourist with ID: ${trip.id}`)}
                       >
                         Delete
                       </Button>
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${trip.lastLocation.lat},${trip.lastLocation.lng}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-orange-700 text-white px-4 py-1 rounded-full shadow hover:bg-orange-800 transition-colors flex items-center justify-center"
+                      >
+                        Track
+                      </a>
+                      <Button
+                        disabled={!trip.efir}
+                        className={`px-4 py-1 rounded-full shadow transition-colors ${
+                          trip.efir
+                            ? "bg-amber-600 text-white hover:bg-amber-700"
+                            : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                        }`}
+                        onClick={() => {
+                          if (trip.efir) {
+                            setSelectedEFIR(trip);
+                            setApprovalStatus(null);
+                          }
+                        }}
+                      >
+                        {trip.efir ? "EFIR" : "No EFIR"}
+                      </Button>
                     </td>
                   </tr>
                 ))
-              }
+              ) : (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="py-4 text-center text-red-600 font-semibold"
+                  >
+                    No tourist found with that name.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* ===== Modal =====
-      {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div className="bg-gray-900 rounded-lg p-6 w-[400px] relative">
+      {/* EFIR Modal */}
+      {selectedEFIR && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg w-96 p-6 relative shadow-xl">
             <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-white"
-              onClick={() => setModalOpen(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              onClick={() => setSelectedEFIR(null)}
             >
-              <X className="w-5 h-5" />
+              <X />
             </button>
-            <h2 className="text-xl font-bold text-white mb-4">Enter Public Key</h2>
-            <input
-              type="text"
-              value={publicKeyInput}
-              onChange={(e) => setPublicKeyInput(e.target.value)}
-              className="w-full p-2 rounded border border-gray-700 bg-gray-800 text-white mb-4"
-              placeholder="Enter tourist public key"
-            />
+            <h2 className="text-xl font-bold mb-4">EFIR Details</h2>
+            <p className="mb-3 text-sm">{selectedEFIR.efir}</p>
+
+            <div className="text-sm mb-4">
+              <p>
+                <strong>Name:</strong> {selectedEFIR.name}
+              </p>
+              <p>
+                <strong>Tourist ID:</strong> {selectedEFIR.id}
+              </p>
+              <p>
+                <strong>Last Location:</strong> {selectedEFIR.lastLocation.lat},{" "}
+                {selectedEFIR.lastLocation.lng}
+              </p>
+            </div>
+
+            {approvalStatus ? (
+              <p className="font-semibold text-green-700 mb-4">{approvalStatus}</p>
+            ) : (
+              <div className="flex justify-end gap-4 mb-4">
+                <Button
+                  className="bg-green-600 text-white px-4 py-1 rounded-full hover:bg-green-700"
+                  onClick={handleApprove}
+                >
+                  Approve
+                </Button>
+                <Button
+                  className="bg-red-600 text-white px-4 py-1 rounded-full hover:bg-red-700"
+                  onClick={handleDisapprove}
+                >
+                  Disapprove
+                </Button>
+              </div>
+            )}
             <Button
-              className="w-full bg-white text-black hover:bg-black hover:text-white transition-colors"
-              onClick={handleSubmit}
+              className="bg-gray-500 text-white px-4 py-1 rounded-full hover:bg-gray-600"
+              onClick={() => setSelectedEFIR(null)}
             >
-              Submit
+              Close
             </Button>
           </div>
         </div>
-      )} */}
+      )}
 
-      {/* ===== Feedback Section ===== */}
-      <div className="mt-20 w-full flex flex-col items-center">
-        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-          <MessageSquare className="w-6 h-6 text-green-400" /> User Feedback
+      {/* Feedback Section */}
+      <div className="mt-20 w-full flex flex-col items-center px-10">
+        <h2 className="text-2xl font-bold text-amber-700 mb-6 flex items-center gap-2">
+          <MessageSquare className="w-6 h-6 text-orange-600" /> User Feedback
         </h2>
 
-        <div className="w-full flex flex-row flex-wrap justify-center gap-6 px-4">
+        <div className="w-full flex flex-row flex-wrap justify-center gap-6">
           {[
             {
               id: 1,
               user: "Amit Kumar",
-              feedback: "The Tourist Department Dashboard is very easy to navigate and manage tourist information.",
+              feedback:
+                "The Tourist Department Dashboard is very easy to navigate and manage tourist information.",
               rating: 5,
             },
             {
               id: 2,
               user: "Priya Sharma",
-              feedback: "I like the clean design and the way trips are listed. It makes my work faster.",
+              feedback:
+                "I like the clean design and the way trips are listed. It makes my work faster.",
               rating: 4,
             },
             {
               id: 3,
-              user: "John Doe",
-              feedback: "The dashboard loads quickly and securely stores all my data. Great job!",
+              user: "Rohan Verma",
+              feedback:
+                "The dashboard loads quickly and securely stores all my data. Great job!",
               rating: 5,
             },
           ].map((item) => (
             <Card
               key={item.id}
-              className="w-[320px] mb-6 p-5 rounded-lg bg-gray-900 text-white shadow hover:shadow-lg transition"
+              className="w-[320px] mb-6 p-5 rounded-lg bg-orange-50 border-l-4 border-l-orange-600 shadow hover:shadow-lg transition"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <User className="w-5 h-5 text-blue-400" />
-                  <span className="font-semibold text-lg">{item.user}</span>
+                  <User className="w-5 h-5 text-orange-600" />
+                  <span className="font-semibold text-lg text-black">{item.user}</span>
                 </div>
                 <span className="flex gap-1">
                   {[...Array(item.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400" />
+                    <Star key={i} className="w-4 h-4 text-yellow-500" />
                   ))}
                   {[...Array(5 - item.rating)].map((_, i) => (
-                    <Star key={i + item.rating} className="w-4 h-4 text-gray-600" />
+                    <Star key={i + item.rating} className="w-4 h-4 text-gray-400" />
                   ))}
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <MessageSquare className="w-4 h-4 text-green-400 mt-1" />
-                <p className="text-gray-300 text-sm">{item.feedback}</p>
+                <MessageSquare className="w-4 h-4 text-orange-600 mt-1" />
+                <p className="text-gray-700 text-sm">{item.feedback}</p>
               </div>
             </Card>
           ))}
         </div>
       </div>
-      <footer className="w-full bg-gray-900 text-white text-center py-4 mt-12 rounded-t-xl">
+
+      {/* Footer Section */}
+      <footer className="w-full bg-amber-700 text-white text-center py-4 mt-12 rounded-t-xl">
         &copy; {new Date().getFullYear()} TourSafe Tourist Dashboard. All rights reserved.
       </footer>
     </div>
