@@ -1,3 +1,6 @@
+// src/data.ts
+// src/data.ts
+
 export interface Officer {
   initials: string;
   name: string;
@@ -9,48 +12,48 @@ export interface Officer {
 
 export const officers: Officer[] = [
   {
-    initials: 'JD',
-    name: 'Officer John Doe',
+    initials: 'RK',
+    name: 'Officer Rajesh Kumar',
     badge: '12345',
     status: 'Active',
     district: 'Central',
     shift: 'Morning',
   },
   {
-    initials: 'JS',
-    name: 'Officer Jane Smith',
+    initials: 'PS',
+    name: 'Officer Priya Sharma',
     badge: '12346',
     status: 'Active',
     district: 'North',
     shift: 'Evening',
   },
   {
-    initials: 'MB',
-    name: 'Officer Mike Brown',
+    initials: 'AV',
+    name: 'Officer Anil Verma',
     badge: '12347',
     status: 'Active',
     district: 'South',
     shift: 'Night',
   },
   {
-    initials: 'SD',
-    name: 'Officer Sarah Davis',
+    initials: 'SN',
+    name: 'Officer Sunita Nair',
     badge: '12348',
     status: 'Active',
     district: 'East',
     shift: 'Morning',
   },
   {
-    initials: 'RW',
-    name: 'Officer Robert Wilson',
+    initials: 'KS',
+    name: 'Officer Karan Singh',
     badge: '12349',
     status: 'Active',
     district: 'West',
     shift: 'Evening',
   },
   {
-    initials: 'LM',
-    name: 'Officer Lisa Miller',
+    initials: 'DJ',
+    name: 'Officer Deepa Joshi',
     badge: '12350',
     status: 'Active',
     district: 'Downtown',
@@ -58,7 +61,7 @@ export const officers: Officer[] = [
   },
 ];
 
-// Already have Officer & officers above…
+// src/data.ts
 
 export interface EFIR {
   id: string;
@@ -77,7 +80,7 @@ export const efirs: EFIR[] = [
     title: 'Flash Flood Warning',
     status: 'Active',
     description: 'Sudden flash flood reported near Central Market area.',
-    filedBy: 'John Carter',
+    filedBy: 'Ankit kumar saho',
     dateFiled: '2025-09-20',
   },
   {
@@ -85,7 +88,7 @@ export const efirs: EFIR[] = [
     title: 'Earthquake Tremors Report',
     status: 'Active',
     description: 'Mild earthquake tremors felt at railway station zone.',
-    filedBy: 'Alice Smith',
+    filedBy: 'shivam kumar',
     dateFiled: '2025-09-21',
   },
   {
@@ -93,7 +96,7 @@ export const efirs: EFIR[] = [
     title: 'Landslide Alert',
     status: 'Pending',
     description: 'Potential landslide detected near East District hillside.',
-    filedBy: 'Robert Brown',
+    filedBy: 'sourav',
     dateFiled: '2025-09-18',
   },
   {
@@ -101,7 +104,7 @@ export const efirs: EFIR[] = [
     title: 'Storm Damage Report',
     status: 'Pending',
     description: 'High winds and storm causing damage in South Park area.',
-    filedBy: 'Sarah Miller',
+    filedBy: 'koushal ',
     dateFiled: '2025-09-19',
   },
   {
@@ -109,17 +112,82 @@ export const efirs: EFIR[] = [
     title: 'Wildfire Incident',
     status: 'Previous',
     description: 'Wildfire controlled in forest area near Downtown.',
-    filedBy: 'Linda Green',
+    filedBy: 'pragati',
     dateFiled: '2025-08-30',
-    policeInCharge: 'Officer John Doe', // officer who coordinated response
+    policeInCharge: 'Officer Anjali Patel', // officer who coordinated response
   },
   {
     id: 'EFIR-006',
     title: 'Flood Relief Completed',
     status: 'Previous',
     description: 'Flood waters receded and relief operations finished in North District.',
-    filedBy: 'Emily Johnson',
+    filedBy: 'Rajandanie rout',
     dateFiled: '2025-08-28',
     policeInCharge: 'Officer Jane Smith', // officer who coordinated response
   },
+];
+
+
+// src/touristDepartments.ts
+
+export interface TouristDepartment {
+  name: string;
+  description: string;
+  phone: string;
+  hours: string;
+}
+
+export const touristDepartments: TouristDepartment[] = [
+  {
+    name: 'Central Tourist Office',
+    description: 'Main City Center',
+    phone: '+91 98765 43210',
+    hours: '24/7',
+  },
+  {
+    name: 'North District Office',
+    description: 'North Zone',
+    phone: '+91 98765 43211',
+    hours: '9 AM - 8 PM',
+  },
+  {
+    name: 'Emergency Helpline',
+    description: '24/7 Tourist Support',
+    phone: '1800-XXX-XXXX',
+    hours: 'Immediate Response',
+  },
+];
+
+
+// src/policeOfficers.ts
+
+export const policeOfficers: string[] = [
+
+  "Officer Rajesh Kumar",
+  "Officer Priya Sharma",
+  "Officer Anil Verma",
+  "Officer Sunita Nair",
+  "Officer Karan Singh",
+  "Officer Deepa Joshi",
+  "Officer Manoj Patel",
+  "Officer Neha Reddy",
+  "Officer Suresh Menon",
+  "Officer Anjali Chauhan"
+];
+
+
+
+// src/newsHeadlines.ts
+
+export const newsHeadlines: string[] = [
+  "City Launches Smart Policing App for Tourists",
+  "Flash Flood Warning Issued for Downtown Area",
+  "New Tourist Information Centers Open in North District",
+  "Police Officers Receive Training on Disaster Response",
+  "Emergency Helpline Receives Record Calls During Festival Season",
+  "Wildfire Under Control in Western Hills, Relief Teams Deployed",
+  "High-Tech Surveillance Cameras Installed at Major Tourist Spots",
+  "Local Authorities Announce 24/7 Support for Foreign Visitors",
+  "Evacuation Drill Conducted in Coastal Zone",
+  "Community Volunteers Join Police for Disaster Management"
 ];
